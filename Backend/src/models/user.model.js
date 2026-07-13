@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema({
         unique: true,
         immutable: true,
         trim: true,
-        lowercase: true
+        lowercase: true,
+        match:[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"Invalid Email address"]
     },
     name: {
         type: String,
@@ -20,6 +21,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         minLength: [6, "Password should contain more than 6 character"]
+    },
+    profilePic:{
+        type:String,
+        default:""
     }
 }, {
     timestamps: true
