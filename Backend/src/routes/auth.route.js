@@ -5,8 +5,6 @@ const arcjetMiddleware = require("../middleware/arcjet.middleware");
 
 const router = express.Router();
 
-// Apply Arcjet security to all auth routes
-router.use(arcjetMiddleware);
 
 // Public routes
 router.post("/register", authController.userRegister);

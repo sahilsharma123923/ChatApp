@@ -1,6 +1,6 @@
 require("dotenv").config();
-
-const { arcjet, shield, detectBot, tokenBucket } = require("@arcjet/node");
+const arcjet = require("@arcjet/node").default;
+const { shield, detectBot, tokenBucket } = require("@arcjet/node");
 
 const aj = arcjet({
     key: process.env.ARCJET_KEY,

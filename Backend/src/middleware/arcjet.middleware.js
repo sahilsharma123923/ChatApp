@@ -6,8 +6,7 @@ async function arcjetMiddleware(req, res, next) {
     try {
 
         // Ask Arcjet to inspect this request
-        const decision = await aj.protect(req);
-        // If Arcjet blocks the request
+        const decision = await aj.protect(req, { requested: 1 });        // If Arcjet blocks the request
         if (decision.isDenied()) {
             // Rate limit exceeded
             if (decision.reason.isRateLimit()) {
