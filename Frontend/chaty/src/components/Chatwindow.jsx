@@ -1,11 +1,23 @@
-import React from 'react'
+import ChatHeader from "./ChatHeader";
+import MessageBubble from "./MessageBubble";
+import MessageInput from "./MessageInput";
 
-const Chatwindow = () => {
+const ChatWindow = () => {
   return (
-    <div className='text-white'>
-      Start the conversation with you friends
-    </div>
-  )
-}
+    <div className="flex-1 flex flex-col bg-black">
 
-export default Chatwindow
+      <ChatHeader />
+
+      {/* Messages Area */}
+      <div className="flex-1 overflow-y-auto p-5 bg-black">
+        <MessageBubble message="Hi!" isOwn={false} />
+        <MessageBubble message="Hello 👋" isOwn={true} />
+      </div>
+
+      <MessageInput />
+
+    </div>
+  );
+};
+
+export default ChatWindow;

@@ -2,7 +2,7 @@ import { getInitials } from "../utils/helper";
 
 const ProfilePic = ({ src, name }) => {
   return (
-    <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden">
+    <div className="w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center overflow-hidden">
       
       {src ? (
         <img
