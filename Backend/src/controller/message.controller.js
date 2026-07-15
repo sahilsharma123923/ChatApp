@@ -91,7 +91,7 @@ async function getChats(req,res) {
         ?msg.receiverId.toString():msg.senderId.toString()
     ))
     ];
-    const chatPartners=await userModel.find({id:{$in:chatPartnerIDs}}).select("-password")
+    const chatPartners=await userModel.find({_id:{$in:chatPartnerIDs}}).select("-password")
 
     return res.status(200).json({chatPartners})
 }catch(err){
