@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
+import { useAuthStore } from "../store/useAuthStore";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,8 @@ const Signup = () => {
 
   const navigate = useNavigate();
 
+  const {setUser}=useAuthStore();
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -30,8 +33,11 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      await api.post("/auth/register", formData);
-      navigate("/");
+     const res= await api.post("/auth/", formData);
+    
+      setUser(res.data.user);
+
+      navigate("/home");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
     } finally {

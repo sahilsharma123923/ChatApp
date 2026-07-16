@@ -6,10 +6,12 @@ export const useChatStore = create((set, get) => ({
   allContacts: [],
   chats: [],
   messages: [],
+
   activeTab: "chats",
   selectedUser: null,
 
-  isUserLoading: false,
+  isContactsLoading: false,
+  isChatsLoading: false,
   isMessageLoading: false,
 
   isSoundEnabled: localStorage.getItem("isSoundEnabled") === "true",
@@ -31,53 +33,58 @@ export const useChatStore = create((set, get) => ({
       selectedUser: user,
     }),
 
- getAllContacts: async () => {
-  set({ isUserLoading: true });
-
-  try {
-    const res = await api.get("/messages/contacts");
-
-    set({
-      allContacts: res.data.filteredUsers,
-    });
-  } catch (error) {
-    toast.error(error.response?.data?.message);
-  } finally {
-    set({
-      isUserLoading: false,
-    });
-  }
-},
-
- getMyChatPartners: async () => {
-  set({ isUserLoading: true });
-
-  try {
-    const res = await api.get("/messages/chat");
-
-    set({
-      chats: res.data.chatPartners,
-    });
-  } catch (error) {
-    toast.error(error.response?.data?.message);
-  } finally {
-    set({
-      isUserLoading: false,
-    });
-  }
-},
-
-  getMessages: async (userId) => {
-    set({ isMessageLoading: true });
+  getAllContacts: async () => {
+    set({ isContactsLoading: true });
 
     try {
-      const res = await api.get(`/messages/${userId}`);
+      const res = await api.get("/message/contacts");
+
+      set({
+        allContacts: res.data.filteredUsers,
+      });
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to fetch contacts"
+      );
+    } finally {
+      set({ isContactsLoading: false });
+    }
+  },
+
+  getMyChatPartners: async () => {
+    set({ isChatsLoading: true });
+
+    try {
+      const res = await api.get("/message/chat");
+
+      set({
+        chats: res.data.chatPartners,
+      });
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to fetch chats"
+      );
+    } finally {
+      set({ isChatsLoading: false });
+    }
+  },
+
+  getMessages: async (userId) => {
+    set({
+      messages: [],
+      isMessageLoading: true,
+    });
+
+    try {
+      const res = await api.get(`/message/${userId}`);
 
       set({
         messages: res.data,
       });
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Something went wrong");
+      toast.error(
+        error.response?.data?.message || "Failed to fetch messages"
+      );
     } finally {
       set({
         isMessageLoading: false,
@@ -92,15 +99,17 @@ export const useChatStore = create((set, get) => ({
 
     try {
       const res = await api.post(
-        `/messages/send/${selectedUser._id}`,
+        `/message/send/${selectedUser._id}`,
         messageData
       );
 
       set({
         messages: [...messages, res.data.newMessage],
-    });
+      });
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Something went wrong");
+      toast.error(
+        error.response?.data?.message || "Failed to send message"
+      );
     }
   },
 }));
